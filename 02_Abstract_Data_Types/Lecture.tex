@@ -1,0 +1,316 @@
+\documentclass[pdf]{beamer}
+    
+    \usepackage[utf8]{inputenc} 
+    \usepackage[T1]{fontenc}
+    \usepackage[UKenglish]{babel}
+    \usepackage{listings}
+    \usepackage{hyperref}
+    
+    \mode<presentation>{\usetheme[numbering=none, progressbar=head, block=fill]{metropolis}}
+    \title{Abstract Data Types}
+    \subtitle{Week 2}
+    \author{Stephen Naicken}
+    \institute[ALU]{African Leadership University}
+    
+\begin{document}
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\section{Updates}
+
+\begin{frame}{Assessment}
+    \begin{itemize}
+        \item 50\% exam
+        \item 50\% coursework
+        \begin{itemize}
+            \item 60\% from a programming assignment (W1-5).
+            \item 20\% from a problem set (W6-7).
+            \item 20\% online quizzes on GCU Learn.
+        \end{itemize}
+        \item Assignment release and submission dates TBC.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lab Groups}
+    Please visit \url{http://bit.ly/2JaAMNT} to find out which lab session you will be required to attend. \textbf{Attendance is compulsory}.
+\end{frame}
+
+\section{Week 1: Recap}
+
+\begin{frame}{Bag}
+    % \begin{block}{Process}
+        In week 1, we implemented a model of a bag of Lego bricks in Java.  Students did the following:
+        
+        \begin{itemize}
+            \item Initial implementation using a single class.
+            \item Changed the implementation to use an interface and an array.
+        \end{itemize}
+        
+    % \end{block}
+    
+    \begin{block}{Questions}
+        \begin{itemize}
+            \item Why did we make use of an interface?
+            \item Why did we switch to an array?
+            \item How is this connected to ADTs?
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Student code}
+    \begin{block}{Bag.java}
+    \begin{lstlisting}[language=Java,basicstyle=\ttfamily\tiny,keywordstyle=\color{blue}]
+        public class Bag {
+            List<LegoBrick> al;
+        
+            public Bag(){
+                al = new ArrayList<LegoBrick>();    
+            }
+        
+            public void addBrick(LegoBrick newBrick){
+                al.add(newBrick);
+            }
+        
+            public void removeBrick(){
+                if(!al.isEmpty()){
+                    Random rand = new Random();
+                    int  n = rand.nextInt(al.size());
+                    al.remove(n);
+                } else {
+                    System.out.println("the bag is empty");
+                }
+            }
+        
+            public void empty(){
+                al.clear();
+            }
+        }
+    \end{lstlisting}
+\end{block}
+\end{frame}
+
+\begin{frame}{Improving the Bag class}
+    \begin{itemize}
+        \item<1-2> Our Bag can only hold one type of object, LegoBrick.
+        \item<1-2> But we might want a Bag the can hold other types of objects.
+        \item<1-2> How can we make this so?
+        \item<2> We can use an interface.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Bag interface}
+    \begin{lstlisting}[language=Java,basicstyle=\ttfamily\tiny,keywordstyle=\color{blue}]
+    interface Bag <T>{
+
+        // add an object of type T to the bag
+        void add(T t);
+
+        // remove an object of type T from the bag
+        T remove(T t);
+
+        // check if an object of type T is contained in the bag
+        boolean contains(T t);
+
+        // returns the number of items in the bag
+        int size();
+
+        // empty the bag
+        T[] empty();
+
+    }
+    \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}{Abstract Data Type}
+    An Abstract Data Type (ADT) defines:
+    \begin{itemize}
+        \item<1-3> A well-specified collection of data (data state)
+        \item<1-3> A set of operations that can be performed upon the data
+    \end{itemize}
+
+    \begin{block}<2-3>{Question}
+        Is the Bag interface an ADT?
+    \end{block}
+
+    \begin{block}<3>{Answer}
+        Yes, but who can explain why?
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Bag ADT}
+    \begin{block}{A well-specified collection of data (data state)}
+        \begin{lstlisting}
+    interface Bag <T>{
+        \end{lstlisting}
+    \end{block}
+
+    A Bag ADT that can hold objects of type T.
+\end{frame}
+
+\begin{frame}[fragile]{Bag ADT}
+    \begin{block}{A well-specified collection of data (data state)}
+        \begin{lstlisting}
+    interface Bag <T extends Student>{
+        \end{lstlisting}
+    \end{block}
+
+    \begin{block}{Question}
+        A Bag ADT that can hold objects of type... ?.
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Bag ADT}
+    \begin{block}{A well-specified collection of data (data state)}
+        \begin{lstlisting}
+    interface Bag <? extends T>{
+        \end{lstlisting}
+    \end{block}
+
+    \begin{block}{Question}
+        A Bag ADT that can hold objects of type... ?.
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Bag ADT}
+    \begin{block}{A set of operations that can be performed upon the data}
+        \begin{lstlisting}[language=Java,basicstyle=\ttfamily\tiny,keywordstyle=\color{blue}]
+            // add an object of type T to the bag
+            void add(T t);
+
+            // remove an object of type T from the bag
+            T remove(T t);
+
+            // check if an object of type T is contained in the bag
+            boolean contains(T t);
+
+            // returns the number of items in the bag
+            int size();
+
+            // empty the bag
+            T[] empty();
+        \end{lstlisting}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Data Structure}
+    \begin{itemize}
+        \item A base storage method (e.g. an array, a list, a tree, a …)
+        \item One or more algorithms that are used to access or modify that data
+    \end{itemize}
+
+    A class that implements the ADT interface is a model of a data structure (Concrete Data Type).
+\end{frame}
+
+\begin{frame}[fragile]{BetterLegoBag}
+    \begin{block}{A base storage method}
+        \begin{lstlisting}[language=Java,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{blue}]
+        // backing data structure to store the object
+        private Lego[] legos;
+        \end{lstlisting}
+    \end{block}
+\end{frame}
+
+\begin{frame}{LegoBag}
+    \begin{block}{One or more algorithms that are used to access or modify that data}
+        %\begin{lstlisting}[language=Java,basicstyle=\ttfamily\tiny,keywordstyle=\color{blue}]
+            All the methods implementing the methods defined in the interface (i.e. contract).
+        %\end{lstlisting}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Polymorphism and Encapsulation}
+    \begin{block}{Encapsulation}
+        \begin{lstlisting}[language=Java,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{blue}]
+    // backing data structure to store the object
+    private Lego[] legos;
+        \end{lstlisting}
+
+        The internals of the data structure are hidden and only exposed through the methods defined in the interface (and implemented in the class).
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Polymorphism and Encapsulation}
+    \begin{block}{Polymorphism}
+        \begin{lstlisting}[language=Java,basicstyle=\ttfamily\scriptsize,keywordstyle=\color{blue}]
+    public class Thief {
+
+        void steal(Bag<?> bag){
+            // Thief can steal any bag!
+        }
+    }
+        \end{lstlisting}
+    \end{block}
+\end{frame}
+
+\section{Week 2}
+
+\begin{frame}{Learning Outcomes}
+    \begin{block}{What you must know}
+        \begin{itemize}
+            \item The ADT definition.
+            \item An ADT is abstract and requires an implementation.
+            \item The interface is the ADT.
+            \item The implementation is a data structure.
+            \item Know the rationale/benefits of ADTs.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Learning Outcomes}
+    \begin{block}{What you must be able to do}
+        \begin{itemize}
+            \item Code a Java interface to define an ADT.
+            \item Code an implementation of a simple ADT.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Tasks \& Deliverables}
+    \begin{block}{GCU}
+        \begin{enumerate}
+            \item Study week 1 and 2 of the GCULearn content.
+            \item Week 2 GCULearn Quiz \textbf{(Summative)}.
+        \end{enumerate}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Tasks \& Deliverables}
+    \begin{block}{ALU}
+        \begin{enumerate}
+            \item Implement a Stack ADT.
+            \item Implement a Stack data structure.
+            \item Use the Stack implementation to implement one of the following:
+            \begin{enumerate}
+                \item Prefix to Postfix conversion
+                \item Postfix calculator
+                \item Towers of Hanoi algorithm
+            \end{enumerate}
+        \end{enumerate}
+        Deadline: Tuesday 04/06/2018 @ 16hr (Hard).
+    \end{block}
+\end{frame}
+
+\begin{frame}{Assessment}
+    \begin{block}{ALU}
+        \begin{itemize}
+            \item This is individual work, no plagiarism, no collusion.
+            \item You may be asked to perform a Kata of your code in the compulsory lab class.
+            \item Speak natural language, not Java (or any other programming language)
+            \item Work will assessed with respect to the learning outcomes, no grades will be given.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Feedback}
+    \begin{block}{ALU}
+        \begin{itemize}
+            \item Individual feedback will be given by 18/06/2018.
+            \item Feedback will cover code quality, algorithmic logic, efficiency and so on.
+            \item General feedback will be given in class on 11/06/2018.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\end{document}
